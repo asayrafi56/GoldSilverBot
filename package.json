@@ -1,8 +1,15 @@
 {
   "name": "gold-silver-bot",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
+  "description": "Auto Gold & Silver signal bot for Telegram via GitHub Actions",
+  "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "echo \"No tests\""
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
   }
 }
