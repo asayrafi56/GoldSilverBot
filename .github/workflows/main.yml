@@ -43,7 +43,7 @@ jobs:
           fi
 
       - name: Notify Telegram on failure
-        if: failure()
+        if: ${{ failure() }}
         env:
           BOT: ${{ secrets.BOT }}
           CHAT: ${{ secrets.CHAT }}
