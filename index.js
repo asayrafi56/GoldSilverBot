@@ -32,13 +32,15 @@ async function main() {
     if (ratio > 85) signal = "بخر نقره";
     else if (ratio < 75) signal = "بخر طلا";
 
-    const msg = `XAU/USD: ${XAU}
+    const msg = `✅ اجرای خودکار هر ساعت انجام شد.
+
+XAU/USD: ${XAU}
 XAG/USD: ${XAG}
 نسبت طلا/نقره: ${ratio.toFixed(2)}
 سیگنال: ${signal}`;
     await notify(msg);
   } catch (e) {
-    await notify("خطا: " + e.message);
+    await notify("⚠️ خطا در اجرای خودکار: " + e.message);
     process.exitCode = 1;
   }
 }
