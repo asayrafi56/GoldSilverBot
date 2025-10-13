@@ -1,0 +1,20 @@
+name: GoldSilver Hourly
+
+on:
+  schedule:
+    - cron: "0 * * * *"   # اجرا هر ساعت
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Run bot
+        env:
+          BOT: ${{ secrets.BOT }}
+          CHAT: ${{ secrets.CHAT }}
+        run: npm start
