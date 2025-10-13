@@ -30,6 +30,7 @@ jobs:
 
       - name: Run bot
         id: runbot
+        continue-on-error: true
         env:
           BOT: ${{ secrets.BOT }}
           CHAT: ${{ secrets.CHAT }}
