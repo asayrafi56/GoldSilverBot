@@ -42,8 +42,12 @@ jobs:
             git push
           fi
 
+  notify_fail:
+    needs: run
+    if: ${{ needs.run.result == 'failure' }}
+    runs-on: ubuntu-latest
+    steps:
       - name: Notify Telegram on failure
-        if: ${{ failure() }}
         env:
           BOT: ${{ secrets.BOT }}
           CHAT: ${{ secrets.CHAT }}
@@ -51,4 +55,4 @@ jobs:
         run: |
           curl -sS -X POST "https://api.telegram.org/bot${BOT}/sendMessage" \
             -H "Content-Type: application/json" \
-            -d "{\"chat_id\":\"${CHAT}\",\"text\":\"❌ خطا در اجرای Workflow: ${GITHUB_WORKFLOW} #${GITHUB_RUN_NUMBER}\nRepo: ${GITHUB_REPOSITORY}\nCommit: ${GITHUB_SHA::7}\nLogs: ${RUN_URL}\"}"
+            -d "{\"chat_id\": \"${CHAT}\", \"text\": \"❌ خطا در اجرای Workflow: ${GITHUB_WORKFLOW} #${GITHUB_RUN_NUMBER}\nRepo: ${GITHUB_REPOSITORY}\nLogs: ${RUN_URL}\"}"
