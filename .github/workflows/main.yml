@@ -41,3 +41,14 @@ jobs:
             git commit -m "chore: update signal state [skip ci]" || true
             git push
           fi
+
+      - name: Notify Telegram on failure
+        if: failure()
+        env:
+          BOT: ${{ secrets.BOT }}
+          CHAT: ${{ secrets.CHAT }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          curl -sS -X POST "https://api.telegram.org/bot${BOT}/sendMessage" \
+            -H "Content-Type: application/json" \
+            -d "{\"chat_id\":\"${CHAT}\",\"text\":\"❌ خطا در اجرای Workflow: ${GITHUB_WORKFLOW} #${GITHUB_RUN_NUMBER}\nRepo: ${GITHUB_REPOSITORY}\nCommit: ${GITHUB_SHA::7}\nLogs: ${RUN_URL}\"}"
