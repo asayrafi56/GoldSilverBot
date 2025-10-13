@@ -29,6 +29,7 @@ jobs:
         run: npm ci || npm i
 
       - name: Run bot
+        id: runbot
         env:
           BOT: ${{ secrets.BOT }}
           CHAT: ${{ secrets.CHAT }}
@@ -42,12 +43,8 @@ jobs:
             git push
           fi
 
-  notify_fail:
-    needs: run
-    if: ${{ needs.run.result == 'failure' }}
-    runs-on: ubuntu-latest
-    steps:
       - name: Notify Telegram on failure
+        if: ${{ failure() }}
         env:
           BOT: ${{ secrets.BOT }}
           CHAT: ${{ secrets.CHAT }}
