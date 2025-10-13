@@ -25,6 +25,9 @@ async function notify(text) {
   });
 }
 
+// تست خطای عمدی برای بررسی نوتیفیکیشن Failure — بعد از تست حذف می‌شود
+throw new Error("Test failure");
+
 async function main() {
   try {
     const { XAU, XAG } = await getPrices();
