@@ -1,4 +1,5 @@
-// index.js
+import fs from "fs";
+
 async function getPrices() {
   const res = await fetch("https://data-asg.goldprice.org/dbXRates/USD", {
     headers: { Accept: "application/json" },
@@ -32,15 +33,24 @@ async function main() {
     if (ratio > 85) signal = "بخر نقره";
     else if (ratio < 75) signal = "بخر طلا";
 
-    const msg = `✅ اجرای خودکار هر ساعت انجام شد.
+    let last = null;
+    if (fs.existsSync("state.json")) {
+      last = JSON.parse(fs.readFileSync("state.json", "utf8")).signal;
+    }
+
+    if (signal !== last) {
+      const msg = `🔁 سیگنال جدید: ${signal}
 
 XAU/USD: ${XAU}
 XAG/USD: ${XAG}
-نسبت طلا/نقره: ${ratio.toFixed(2)}
-سیگنال: ${signal}`;
-    await notify(msg);
+نسبت طلا/نقره: ${ratio.toFixed(2)}`;
+      await notify(msg);
+      fs.writeFileSync("state.json", JSON.stringify({ signal }));
+    } else {
+      console.log("No change, skipping notification.");
+    }
   } catch (e) {
-    await notify("⚠️ خطا در اجرای خودکار: " + e.message);
+    await notify("⚠️ خطا: " + e.message);
     process.exitCode = 1;
   }
 }
