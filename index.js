@@ -15,7 +15,7 @@ async function notify(text) {
   });
 }
 
-// ===== Global error hooks (اعلان خطای قطعی) =====
+// ===== Global error hooks =====
 process.on("uncaughtException", async (err) => {
   await notify(`❌ خطا در اجرای Workflow\n${err?.message || err}\nLogs: ${RUN_URL}`);
   process.exit(1);
@@ -65,10 +65,6 @@ XAG/USD: ${XAG}
   }
 }
 
-// خطای تست؛ بعد از تأیید اعلان خطا، این خط را حذف کن
-throw new Error("Test failure");
-
 main().catch((e) => {
-  // این catch به‌همراه هوک‌های بالا پوشش کامل می‌دهد
   throw e;
 });
